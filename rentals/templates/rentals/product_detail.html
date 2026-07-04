@@ -1,0 +1,81 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block bg_image %}{% static 'rentals/images/background.jpg' %}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="glass-container p-4 p-md-5">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}"
+                    style="width: 100%; object-fit: cover; max-height: 600px;">
+                {% else %}
+                <div class="bg-light text-muted d-flex align-items-center justify-content-center rounded shadow"
+                    style="height: 500px; border: 1px dashed #ccc;">
+                    <span>No Image Available</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6 ps-md-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'catalog' %}"
+                                class="text-decoration-none text-muted">Catalog</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ product.category.name }}</li>
+                    </ol>
+                </nav>
+
+                <h1 class="font-playfair fw-bold display-5 mb-3">{{ product.name }}</h1>
+
+                <div class="mb-4">
+                    {% if product.status == 'available' %}
+                    <span class="badge bg-success px-3 py-2 text-uppercase tracking-widest">Available</span>
+                    {% elif product.status == 'rented' %}
+                    <span class="badge bg-secondary px-3 py-2 text-uppercase tracking-widest">Currently Rented</span>
+                    {% else %}
+                    <span class="badge bg-warning text-dark px-3 py-2 text-uppercase tracking-widest">In
+                        Maintenance</span>
+                    {% endif %}
+                </div>
+
+                <p class="text-muted mb-4 fs-5" style="line-height: 1.8;">{{ product.description }}</p>
+
+                <div class="d-flex align-items-end mb-4 pb-4 border-bottom">
+                    <h3 class="text-gold fw-bold mb-0 me-3">₹{{ product.rental_price }} <span
+                            class="text-muted fs-6 fw-normal">/ day</span></h3>
+                    <p class="small text-muted mb-1"><i class="bi bi-shield-check"></i> Security Deposit: ₹{{
+                        product.security_deposit }}</p>
+                </div>
+
+                <div class="mb-5 p-4 rounded"
+                    style="background: rgba(212, 175, 55, 0.1); border-left: 4px solid #D4AF37;">
+                    <h5 class="fw-bold mb-3 font-playfair">Sustainable Impact</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="mb-1 text-muted small text-uppercase tracking-widest">Water Saved</p>
+                            <p class="mb-0 fs-4 fw-bold">{{ product.water_saved }} L</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-1 text-muted small text-uppercase tracking-widest">Carbon Offset</p>
+                            <p class="mb-0 fs-4 fw-bold">{{ product.carbon_offset }} kg</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    {% if product.status == 'available' %}
+                    <a href="{% url 'book_product' product.id %}"
+                        class="btn btn-gold w-100 py-3 text-uppercase fw-bold tracking-widest shadow-sm">Reserve This
+                        Item</a>
+                    {% else %}
+                    <button class="btn btn-secondary w-100 py-3 text-uppercase fw-bold tracking-widest disabled">Item
+                        Unavailable</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+/* ROOT VARIABLES - Matching your Luxury Theme */
+:root {
+    --gold: #D4AF37;
+    --ivory: #FAF9F6;
+    --charcoal: #333333;
+    --white: #ffffff;
+}
+
+/* LOGIN PAGE STYLING */
+body.login {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                url('https://images.unsplash.com/photo-1594462285124-d33698ed3904?q=80&w=2000') no-repeat center center fixed;
+    background-size: cover;
+}
+
+#login-form {
+    background: rgba(250, 249, 246, 0.96) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.login #header { background: transparent !important; border: none !important; }
+.login #header a { color: var(--white) !important; font-family: 'Playfair Display', serif; }
+
+/* DASHBOARD STYLING */
+#header {
+    background: var(--charcoal) !important;
+    color: var(--gold) !important;
+    border-bottom: 3px solid var(--gold) !important;
+}
+
+div.breadcrumbs {
+    background: var(--ivory) !important;
+    color: var(--charcoal) !important;
+    border-bottom: 1px solid #ddd;
+}
+
+/* BUTTONS & ACTIONS */
+.button, input[type=submit], .submit-row input {
+    background: var(--gold) !important;
+    border-radius: 0 !important;
+    border: none !important;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.button:hover { background: #b8962e !important; }
+
+/* MODULE HEADERS */
+.module h2, .module caption, .inline-group h2 {
+    background: var(--gold) !important;
+    color: var(--white) !important;
+    text-transform: uppercase;
+}
+
+/* DASHBOARD LINKS */
+a:link, a:visited { color: var(--gold); }

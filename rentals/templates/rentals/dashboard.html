@@ -1,0 +1,105 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block bg_image %}{% static 'rentals/images/background.jpg' %}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="glass-container mb-4 p-4 p-md-5">
+        <h1 class="font-playfair display-5 fw-bold mb-0">My Dashboard</h1>
+        <p class="text-muted mb-0">Manage your rentals and view your sustainable impact.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="glass-container p-5 text-center"
+                style="background: rgba(30, 30, 30, 0.9); border-color: #D4AF37;">
+                <h3 class="font-playfair text-white mb-4">Your Impact</h3>
+                <div class="border-bottom border-secondary mb-4 mx-4"></div>
+
+                <div class="mb-5">
+                    <h1 class="display-4 fw-bold text-gold">{{ total_water|default:"0" }} L</h1>
+                    <p class="small text-uppercase tracking-widest text-light mt-2" style="opacity: 0.8;">Water Saved
+                    </p>
+                </div>
+
+                <div>
+                    <h2 class="display-5 fw-bold text-gold">{{ total_waste|default:"0" }} kg</h2>
+                    <p class="small text-uppercase tracking-widest text-light mt-2" style="opacity: 0.8;">Carbon Offset
+                    </p>
+                </div>
+
+                <div class="mt-5 text-start">
+                    <p class="text-light small" style="opacity: 0.7; line-height: 1.6;">By choosing to rent instead of
+                        buy, you are directly contributing to a more sustainable future for fashion.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="glass-container p-4 p-md-5 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-light">
+                    <h2 class="font-playfair fw-bold mb-0">Rental History</h2>
+                </div>
+
+                <div class="rental-list mt-4">
+                    {% for booking in bookings %}
+                    <div class="card mb-3 border-0 shadow-sm transition-hover"
+                        style="background: rgba(255, 255, 255, 0.6); border-radius: 10px;">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    {% if booking.product.image %}
+                                    <img src="{{ booking.product.image.url }}" alt="{{ booking.product.name }}"
+                                        class="rounded shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="bg-secondary rounded shadow-sm d-flex justify-content-center align-items-center text-white"
+                                        style="width: 80px; height: 80px; font-size: 0.8rem;">
+                                        No Img
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    <h5 class="font-playfair fw-bold mb-1">{{ booking.product.name }}</h5>
+                                    <p class="text-muted small mb-0">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        {{ booking.start_date|date:"M d, Y" }} to {{ booking.end_date|date:"M d, Y" }}
+                                    </p>
+                                </div>
+                                <div class="col-auto text-end">
+                                    <span class="badge bg-dark fw-normal px-3 py-2 text-uppercase tracking-widest mb-2">
+                                        {{ booking.product.status }}
+                                    </span>
+                                    <div class="text-gold small fw-bold">₹{{ booking.product.rental_price }} / day</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-5">
+                        <p class="text-muted fs-5 mb-4">No bookings found in your history.</p>
+                        <a href="{% url 'catalog' %}"
+                            class="btn btn-outline-dark px-4 py-2 text-uppercase tracking-widest shadow-sm">Explore
+                            Collection</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .transition-hover {
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .transition-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+    }
+</style>
+{% endblock %}
+{% endblock %}

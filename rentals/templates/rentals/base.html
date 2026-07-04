@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aura Bridal</title>
+    <!-- Add Bootstrap 5 for the UI classes used in templates -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            /* Fallback background, overridden in specific templates or loaded as default showroom */
+            background: url("{% block bg_image %}{% static 'rentals/images/background.jpg' %}{% endblock %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        /* Professional glass effect for your content containers */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.85);
+            /* Semi-transparent white */
+            backdrop-filter: blur(12px);
+            /* Blur effect for glassmorphism */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            /* Gold accent border */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .tracking-widest {
+            letter-spacing: 0.15em;
+        }
+
+        .btn-gold {
+            background-color: #D4AF37;
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            background-color: #b5952f;
+            color: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .text-gold {
+            color: #D4AF37;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand font-playfair fw-bold fs-3" href="{% url 'catalog' %}">Aura Bridal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link text-uppercase tracking-widest small fw-bold mx-2"
+                            href="{% url 'catalog' %}">Catalog</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link text-uppercase tracking-widest small fw-bold mx-2"
+                            href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                    <li class="nav-item ms-2">
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="btn btn-outline-dark btn-sm text-uppercase tracking-widest">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link text-uppercase tracking-widest small fw-bold mx-2"
+                            href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item ms-2"><a class="btn btn-gold btn-sm text-uppercase tracking-widest px-3"
+                            href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="container mt-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0" role="alert"
+            style="border-left: 5px solid #D4AF37 !important;">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

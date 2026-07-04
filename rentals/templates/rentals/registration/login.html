@@ -1,0 +1,73 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block bg_image %}{% static 'rentals/images/login_bg.jpg' %}{% endblock %}
+
+{% block content %}
+<div class="container my-5 d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="col-md-5 col-lg-4">
+        <div class="glass-container p-5 shadow-lg position-relative" style="overflow: hidden;">
+            <div class="text-center mb-5">
+                <h2 class="font-playfair fw-bold">Welcome Back</h2>
+                <p class="text-muted small text-uppercase tracking-widest">Access your account</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label class="form-label text-uppercase small fw-bold tracking-widest text-muted">Username</label>
+                    <div class="input-glass">
+                        {{ form.username }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-uppercase small fw-bold tracking-widest text-muted">Password</label>
+                    <div class="input-glass">
+                        {{ form.password }}
+                    </div>
+                </div>
+
+                {% if form.errors %}
+                <div class="alert alert-danger small p-2 text-center" role="alert">
+                    Invalid username or password.
+                </div>
+                {% endif %}
+
+                <button type="submit"
+                    class="btn btn-gold w-100 py-3 mt-4 text-uppercase fw-bold tracking-widest shadow-sm">Sign
+                    In</button>
+            </form>
+
+            <div class="text-center mt-5">
+                <p class="small text-muted mb-1">Don't have an account?</p>
+                <a href="{% url 'register' %}"
+                    class="text-dark fw-bold text-decoration-none border-bottom border-dark pb-1 text-uppercase small tracking-widest">Register
+                    Here</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    /* Styling for form inputs inside glass container */
+    .input-glass input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s ease;
+    }
+
+    .input-glass input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #D4AF37;
+        box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    }
+</style>
+{% endblock %}
+{% endblock %}

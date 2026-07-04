@@ -1,0 +1,104 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+
+{% block bg_image %}{% static 'rentals/images/background.jpg' %}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="glass-container mb-5 p-5 text-center">
+        <h1 class="font-playfair display-4 fw-bold mb-3">The Conscious Collection</h1>
+        <p class="lead text-muted mb-0" style="max-width: 600px; margin: auto;">Luxury bridal wear, shared for a better
+            planet. Explore our exquisite collection of sustainable bridal rentals.</p>
+    </div>
+
+    <div class="row mb-5 justify-content-center">
+        <div class="col-md-8">
+            <div class="glass-container p-4">
+                <form method="GET" action="{% url 'catalog' %}" class="input-group shadow-sm"
+                    style="border-radius: 8px; overflow: hidden;">
+                    <input type="text" name="q" class="form-control border-0 py-3 ps-4"
+                        style="background: rgba(255, 255, 255, 0.9);"
+                        placeholder="Search for silk lehengas, temple jewelry..."
+                        value="{{ request.GET.q|default_if_none:'' }}">
+                    <button class="btn btn-gold px-4 text-uppercase fw-bold tracking-widest"
+                        type="submit">Search</button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <a href="{% url 'catalog' %}"
+                        class="text-decoration-none {% if not request.GET.category %}text-gold fw-bold border-bottom border-warning{% else %}text-muted{% endif %} me-4 text-uppercase small tracking-widest pb-1">All
+                        Collections</a>
+                    {% for cat in categories %}
+                    <a href="?category={{ cat.id }}"
+                        class="text-decoration-none {% if request.GET.category == cat.id|stringformat:'s' %}text-gold fw-bold border-bottom border-warning{% else %}text-muted{% endif %} me-4 text-uppercase small tracking-widest pb-1">
+                        {{ cat.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-container p-3 d-flex flex-column h-100 transition-hover">
+                <div class="overflow-hidden rounded mb-3 position-relative shadow-sm" style="height: 350px;">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid w-100 h-100"
+                        style="object-fit: cover; transition: transform 0.5s;" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="bg-light text-muted h-100 w-100 d-flex align-items-center justify-content-center">
+                        <span>No Image</span>
+                    </div>
+                    {% endif %}
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-white text-dark shadow-sm px-3 py-2 text-uppercase tracking-widest"
+                            style="font-size: 0.7rem;">Available</span>
+                    </div>
+                </div>
+
+                <h4 class="font-playfair fw-bold mt-2">{{ product.name }}</h4>
+                <p class="text-muted small flex-grow-1" style="line-height: 1.6;">
+                    {{ product.description|truncatewords:15 }}
+                </p>
+
+                <div class="mt-auto pt-3 border-top" style="border-color: rgba(212, 175, 55, 0.2) !important;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-gold fw-bold mb-0 fs-5">₹{{ product.rental_price }} <span
+                                class="text-muted fs-6 fw-normal">/ day</span></p>
+                        <a href="{% url 'product_detail' product.id %}"
+                            class="btn btn-outline-dark btn-sm text-uppercase tracking-widest px-3">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="glass-container py-5">
+                <p class="text-muted fs-5 mb-4">No items found matching your criteria.</p>
+                <a href="{% url 'catalog' %}" class="btn btn-gold px-4 py-2 text-uppercase tracking-widest">Clear all
+                    filters</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .transition-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .transition-hover:hover img {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+{% endblock %}
